@@ -1,0 +1,8 @@
+services:
+  api:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      - JWT_SECRET=change_me_in_demo
+      - SIM_SPEED=2
