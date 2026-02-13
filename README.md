@@ -1,54 +1,107 @@
-# GPU as a Service (Simulation) — Simple Version
+# GPU Job Service (Simulation)
 
-This project implements a **GPU-as-a-Service** web API in **simulation mode** (no real GPU execution). It supports:
-- Users & Admin roles (JWT authentication)
-- Submit jobs with metadata
-- Admin approval required before execution
-- Basic quota (GPU-hours) check
-- Job lifecycle: **PENDING → APPROVED → RUNNING → COMPLETED/FAILED**
+This project is a simple backend service that simulates how a GPU job scheduling system works.
 
-## 1) Quick Run (without Docker)
-### Prerequisites
-- Python 3.10+
+I built this project to practice backend concepts like authentication, role-based access control, and background job processing using FastAPI.
 
-### Install
+Instead of using a real GPU, jobs are simulated and automatically completed after approval.
+
+---
+
+## What this project does
+
+There are two types of users:
+
+### User
+
+* Can register and login
+* Can submit a job
+* Can check job status
+
+### Admin
+
+* Can approve submitted jobs
+* Approved jobs run automatically in the background
+
+Job lifecycle:
+PENDING → APPROVED → RUNNING → COMPLETED
+
+---
+
+## Technologies Used
+
+* Python
+* FastAPI
+* JWT Authentication
+* SQLite
+* Background Tasks
+* Docker (optional)
+
+---
+
+## How to Run (without Docker)
+
+### 1) Create virtual environment
+
 ```bash
 python -m venv .venv
-# Windows: .venv\Scripts\activate
+```
+
+### Activate environment
+
+Windows:
+
+```bash
+.venv\Scripts\activate
+```
+
+Linux/Mac:
+
+```bash
 source .venv/bin/activate
+```
+
+### 2) Install dependencies
+
+```bash
 pip install -r requirements.txt
 ```
 
-### Start API
+### 3) Run the server
+
 ```bash
 uvicorn app.main:app --reload
 ```
 
-Open Swagger UI:
-- http://127.0.0.1:8000/docs
+Open browser:
 
-## 2) Demo Flow (Swagger)
-1. Register admin:
-   - POST `/auth/register` with `role="admin"` and e.g. `quota_hours=999`
-2. Register a normal user:
-   - POST `/auth/register` with `role="user"` and e.g. `quota_hours=10`
-3. Login as user:
-   - POST `/auth/login` → copy the `access_token`
-4. Submit job as user:
-   - POST `/jobs` (Authorization: Bearer TOKEN)
-5. Login as admin and approve:
-   - POST `/admin/jobs/{job_id}/approve`
-6. Watch job status:
-   - GET `/jobs/{job_id}`
+```
+http://127.0.0.1:8000/docs
+```
 
-A background simulator runs approved jobs automatically.
+---
 
-## 3) Run with Docker Compose
+## Example Flow
+
+1. Register admin
+2. Register normal user
+3. Login as user
+4. Submit job
+5. Login as admin and approve job
+6. Watch job become completed automatically
+
+---
+
+## Run with Docker
+
 ```bash
 docker compose up --build
 ```
 
-## 4) Tests
-```bash
-pytest -q
-```
+---
+
+## Goal of the Project
+
+The purpose of this project is learning how job scheduling services work in backend systems such as AI platforms or cloud GPU providers.
+
+This is only a simulation project for educational use.
